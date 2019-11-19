@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/UlrikHolm/KA3-backend.svg?branch=master)](https://travis-ci.org/UlrikHolm/KA3-backend)
-
+[![Build Status](https://travis-ci.org/anirml/SysEksBackend.svg?branch=master)](https://travis-ci.org/anirml/SysEksBackend)
 
 # How to use this start project for future rest/jpa project with CI
 
