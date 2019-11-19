@@ -20,7 +20,7 @@ public class Airport implements Serializable {
     private Long id;
     private String IATA;
     private String placeName;
-    @OneToMany(mappedBy = "airport")
+    @OneToMany
     private List<Flight>flights;
 
     public Airport(String IATA, String placeName) {
