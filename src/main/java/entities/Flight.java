@@ -27,11 +27,10 @@ public class Flight implements Serializable {
     private double price;
     private String link;
     private Long duration;
-
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.DETACH)
     private String origin;
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.DETACH)
     private String destination;
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.DETACH)
+    private Airport airport;
 
     public Flight(String origin, String destination, Date date, double price, String link, Long duration) {
         this.origin = origin;
@@ -101,4 +100,4 @@ public class Flight implements Serializable {
         this.duration = duration;
     }
     
-}
+}   
