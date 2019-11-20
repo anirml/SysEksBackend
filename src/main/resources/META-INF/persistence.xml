@@ -4,6 +4,8 @@
   <persistence-unit name="pu" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>entities.Flight</class>
+    <class>utils.SetupTestFlights</class>
+    <class>facades.FlightFacade</class>
     <class>entities.Airport</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

@@ -2,8 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.FlightDTO;
 import entities.User;
 import facades.ApiScrapeFacade;
+import facades.FlightFacade;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -37,11 +39,12 @@ import utils.EMF_Creator;
 /**
  * @author lam@cphbusiness.dk
  */
-@Path("info")
+@Path("flight")
 public class DemoResource {
 
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final FlightFacade FACADE = FlightFacade.getFacadeExample(EMF);
     
     @Context
     private UriInfo context;
@@ -55,6 +58,7 @@ public class DemoResource {
         return "{\"message\":\"Hello anonymous\"}";
     }
 
+    /*
     //Just to verify if the database is setup
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +73,7 @@ public class DemoResource {
             em.close();
         }
     }
+ */
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -90,7 +95,15 @@ public class DemoResource {
     
     
     
-    
+    @Path("count")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getRenameMeCount() {
+        long count = FACADE.getFlightCount();
+        
+        //System.out.println("--------------->"+count);
+        return "{\"count\":"+count+"}";  //Done manually so no need for a DTO
+    } 
     
     
     
@@ -150,4 +163,28 @@ public class DemoResource {
             }
         }).start();
     }
+    
+    
+    
+    
+    /*
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("all")
+    public List<FlightDTO> allFLights() {
+        List<FlightDTO> flightInfoList = FACADE.getAllFlights();
+        return flightInfoList;
+    }  
+    */
+    
+    @Path("all")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAllFlights() {
+        List<FlightDTO> flights = FACADE.getAllFlights();
+        return GSON.toJson(flights);
+    }
+    
+    
+    
 }
