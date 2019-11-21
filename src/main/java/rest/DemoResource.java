@@ -15,6 +15,8 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -187,12 +189,21 @@ public class DemoResource {
     @Path("allff/{originIATA}-{destinationIATA}/{date}")
     public String SortOriginToDestinationByDate(Flight entity, @PathParam("originIATA") String originIATA, 
             @PathParam("destinationIATA") String destinationIATA, @PathParam("date") String dateStr) throws ParseException {
-        DateFormat format = new SimpleDateFormat("yyyy-dd-MM",Locale.ENGLISH);
-        Date date = format.parse(dateStr);
         
-        List<FlightDTO> flight = FACADE.getFlightsByOriginAndDestinationByDate(originIATA, destinationIATA, date);
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = formatter.parse(dateStr);
+        
+        
+       // LocalDateTime localDateTime = LocalDateTime.parse(dateStr + "T00:00:00");
+       // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+       // String formatDateTime = localDateTime.format(formatter);
+        
+       // DateFormat format = new SimpleDateFormat("yyyy-dd-MM",Locale.ENGLISH);   MMM d, yyyy HH:mm:ss a
+       //Date date = format.parse(dateStr);
+        
+        List<FlightDTO> flight = FACADE.getFlightsByDate(date);
       //  List<FlightDTO> flightInfoList = FACADE.getFlightsByAirport(IATA);
-        return GSON.toJson("HEJ: " + date);
+        return GSON.toJson(flight);
     }  
     
     @Path("all")

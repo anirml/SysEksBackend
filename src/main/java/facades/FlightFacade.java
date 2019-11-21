@@ -102,4 +102,22 @@ public class FlightFacade {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    
+        public List<FlightDTO> getFlightsByDate(Date date) {
+        EntityManager em = getEntityManager();
+
+        List<FlightDTO> FlightsDTO = new ArrayList();
+
+        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f WHERE f.depatureTime LIKE :date" ,Flight.class);
+    
+        List<Flight> flights = query.setParameter("date", date).getResultList();
+
+
+        for (Flight flight : flights) {
+            FlightsDTO.add(new FlightDTO(flight));
+        }
+        return FlightsDTO;
+    }
+            
+            
 }

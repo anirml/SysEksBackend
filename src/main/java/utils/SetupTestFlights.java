@@ -23,35 +23,26 @@ public class SetupTestFlights {
     // Also, either delete this file, when users are created or rename and add to .gitignore
     // Whatever you do DO NOT COMMIT and PUSH with the real passwords
     Airport airport = new Airport("SAS","SAS");
-    //Airport airport2 = new Airport("RYANAIR","RYANAIR");
+    Airport airport2 = new Airport("RYANAIR","RYANAIR");
  
     
     Date date = new Date();
-    /*
     
-    Flight flight = new Flight(airport.setIATA(),date,1500.0,"www.sas.com",new Long(2));
     
-    //User user = new User("user", "test");
-    //User admin = new User("admin", "test");
-    //User both = new User("user_admin", "test");
-
     em.getTransaction().begin();
-    flight.setOrigin(airport);
-    flight.setDestination(airport);
-    flight.setDepatureTime(date);
-    flight.setPrice(1500.0);
-    flight.setLink("www.sas.com");
-    flight.setDuration(new Long(2));
     
+    Flight flight = new Flight(airport,airport2,date,1500,"sas.com",Long.valueOf(5000));
+    Flight flight2 = new Flight(airport,airport2,date,1500,"sas.com",Long.valueOf(5000));
+    Flight flight3 = new Flight(airport,airport2,date,1500,"sas.com",Long.valueOf(5000));
+
     em.persist(airport);
-    em.persist(date);
-    em.persist(1500.0);
-    em.persist("www.sas.com");
-    em.persist(new Long(2));
+    em.persist(airport2);
+    em.persist(flight);
+    em.persist(flight2);
+    em.persist(flight3);
 
     em.getTransaction().commit();
 
-   */
   }
 
 }
