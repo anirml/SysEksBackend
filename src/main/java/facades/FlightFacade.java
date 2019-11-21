@@ -3,7 +3,9 @@ package facades;
 import dto.FlightDTO;
 import static entities.Airport_.IATA;
 import entities.Flight;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -59,14 +61,17 @@ public class FlightFacade {
     }
 
     
-    
-        public List<FlightDTO> getFlightsByAirport(int zip) {
+        public List<FlightDTO> getFlightsByOriginAndDestination(String originIATA, String destinationIATA) {
         EntityManager em = getEntityManager();
 
         List<FlightDTO> FlightsDTO = new ArrayList();
 
-        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f JOIN f.airport a WHERE a.IATA = :IATA", Flight.class);
-        List<Flight> flights = query.setParameter("IATA", IATA).getResultList();
+        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f JOIN f.origin fo JOIN f.destination fd WHERE fo.IATA = :originIATA AND fd.IATA = :destinationIATA" ,Flight.class);
+    
+        List<Flight> flights = query.setParameter("originIATA", originIATA)
+                .setParameter("destinationIATA", destinationIATA)
+                .getResultList();
+
 
         for (Flight flight : flights) {
             FlightsDTO.add(new FlightDTO(flight));
@@ -74,5 +79,27 @@ public class FlightFacade {
         return FlightsDTO;
     }
     
+        public List<FlightDTO> getFlightsByOriginAndDestinationByDate(String originIATA, String destinationIATA, Date date) {
+        EntityManager em = getEntityManager();
+
+        List<FlightDTO> FlightsDTO = new ArrayList();
+
+        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f JOIN f.origin fo JOIN f.destination fd WHERE fo.IATA = :originIATA AND fd.IATA = :destinationIATA AND f.depatureTime = :date" ,Flight.class);
+    
+        List<Flight> flights = query.setParameter("originIATA", originIATA)
+                .setParameter("destinationIATA", destinationIATA)
+                .setParameter("date", date)
+                .getResultList();
+
+
+        for (Flight flight : flights) {
+            FlightsDTO.add(new FlightDTO(flight));
+        }
+        return FlightsDTO;
+    }
+
+    public List<FlightDTO> getFlightsByOriginAndDestinationByDate(String originIATA, String destinationIATA, SimpleDateFormat dated) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

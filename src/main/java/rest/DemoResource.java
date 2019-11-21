@@ -3,6 +3,8 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.FlightDTO;
+import static entities.Airport_.IATA;
+import entities.Flight;
 import entities.User;
 import facades.ApiScrapeFacade;
 import facades.FlightFacade;
@@ -10,8 +12,13 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -165,17 +172,28 @@ public class DemoResource {
     }
     
     
-    
-    
-    /*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("all")
-    public List<FlightDTO> allFLights() {
-        List<FlightDTO> flightInfoList = FACADE.getAllFlights();
-        return flightInfoList;
+    @Path("allf/{originIATA}-{destinationIATA}")
+    public String SortOriginToDestination(Flight entity, @PathParam("originIATA") String originIATA, @PathParam("destinationIATA") String destinationIATA) {
+        List<FlightDTO> flight = FACADE.getFlightsByOriginAndDestination(originIATA, destinationIATA);
+      //  List<FlightDTO> flightInfoList = FACADE.getFlightsByAirport(IATA);
+        return GSON.toJson(flight);
     }  
-    */
+    
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("allff/{originIATA}-{destinationIATA}/{date}")
+    public String SortOriginToDestinationByDate(Flight entity, @PathParam("originIATA") String originIATA, 
+            @PathParam("destinationIATA") String destinationIATA, @PathParam("date") String dateStr) throws ParseException {
+        DateFormat format = new SimpleDateFormat("yyyy-dd-MM",Locale.ENGLISH);
+        Date date = format.parse(dateStr);
+        
+        List<FlightDTO> flight = FACADE.getFlightsByOriginAndDestinationByDate(originIATA, destinationIATA, date);
+      //  List<FlightDTO> flightInfoList = FACADE.getFlightsByAirport(IATA);
+        return GSON.toJson("HEJ: " + date);
+    }  
     
     @Path("all")
     @GET
