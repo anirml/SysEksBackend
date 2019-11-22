@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class FlightDTO {
 
-    
+    private final Long id;
     private final Date depatureTime;
     private final Long flightDuration;
     private final String departureAirportName;
@@ -22,6 +22,7 @@ public class FlightDTO {
     private final String link;
 
     public FlightDTO(Flight f) {
+        this.id = f.getId();
         this.depatureTime = f.getDepatureTime();
         this.flightDuration = f.getDuration();
         this.departureAirportName = f.getOrigin().getPlaceName();

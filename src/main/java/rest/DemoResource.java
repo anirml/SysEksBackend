@@ -176,7 +176,7 @@ public class DemoResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("allf/{originIATA}-{destinationIATA}")
+    @Path("fromto/{originIATA}-{destinationIATA}")
     public String SortOriginToDestination(Flight entity, @PathParam("originIATA") String originIATA, @PathParam("destinationIATA") String destinationIATA) {
         List<FlightDTO> flight = FACADE.getFlightsByOriginAndDestination(originIATA, destinationIATA);
       //  List<FlightDTO> flightInfoList = FACADE.getFlightsByAirport(IATA);
