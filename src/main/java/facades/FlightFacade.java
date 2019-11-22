@@ -81,14 +81,15 @@ public class FlightFacade {
     
         public List<FlightDTO> getFlightsByOriginAndDestinationByDate(String originIATA, String destinationIATA, Date date) {
         EntityManager em = getEntityManager();
-
+        Date nextDay = new Date(date.getTime() + 86400000);
         List<FlightDTO> FlightsDTO = new ArrayList();
 
-        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f JOIN f.origin fo JOIN f.destination fd WHERE fo.IATA = :originIATA AND fd.IATA = :destinationIATA AND f.depatureTime = :date" ,Flight.class);
+        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f JOIN f.origin fo JOIN f.destination fd WHERE fo.IATA = :originIATA AND fd.IATA = :destinationIATA AND f.depatureTime >= :date AND f.depatureTime < :nextDay" ,Flight.class);
     
         List<Flight> flights = query.setParameter("originIATA", originIATA)
                 .setParameter("destinationIATA", destinationIATA)
                 .setParameter("date", date)
+                .setParameter("nextDay", nextDay)
                 .getResultList();
 
 
@@ -105,12 +106,14 @@ public class FlightFacade {
     
         public List<FlightDTO> getFlightsByDate(Date date) {
         EntityManager em = getEntityManager();
-
+        Date nextDay = new Date(date.getTime() + 86400000);
         List<FlightDTO> FlightsDTO = new ArrayList();
 
-        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f WHERE f.depatureTime LIKE :date" ,Flight.class);
+        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f WHERE f.depatureTime >= :date AND f.depatureTime < :nextDay " ,Flight.class);
     
-        List<Flight> flights = query.setParameter("date", date).getResultList();
+        List<Flight> flights = query.setParameter("date", date)
+                .setParameter("nextDay", nextDay)
+                .getResultList();
 
 
         for (Flight flight : flights) {

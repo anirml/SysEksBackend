@@ -186,23 +186,14 @@ public class DemoResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("allff/{originIATA}-{destinationIATA}/{date}")
-    public String SortOriginToDestinationByDate(Flight entity, @PathParam("originIATA") String originIATA, 
-            @PathParam("destinationIATA") String destinationIATA, @PathParam("date") String dateStr) throws ParseException {
+    @Path("date/{date}")
+    public String getFlightsByDate(Flight entity, @PathParam("date") String dateStr) throws ParseException {
         
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = formatter.parse(dateStr);
-        
-        
-       // LocalDateTime localDateTime = LocalDateTime.parse(dateStr + "T00:00:00");
-       // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-       // String formatDateTime = localDateTime.format(formatter);
-        
-       // DateFormat format = new SimpleDateFormat("yyyy-dd-MM",Locale.ENGLISH);   MMM d, yyyy HH:mm:ss a
-       //Date date = format.parse(dateStr);
-        
+        DateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+	String dateInString = dateStr + " 00:00:00";
+        Date date = formatter.parse(dateInString);
+               
         List<FlightDTO> flight = FACADE.getFlightsByDate(date);
-      //  List<FlightDTO> flightInfoList = FACADE.getFlightsByAirport(IATA);
         return GSON.toJson(flight);
     }  
     
