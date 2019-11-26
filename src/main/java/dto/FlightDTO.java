@@ -34,7 +34,7 @@ public class FlightDTO {
         this.link = f.getLink();
     }
 
-    public Date getDepatureTime() {
+    public Date getDepartureTime() {
         return departureTime;
     }
 

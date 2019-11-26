@@ -46,8 +46,8 @@ public class Flight implements Serializable {
         return departureTime;
     }
 
-    public void setDepartureTime(Date depatureTime) {
-        this.departureTime = depatureTime;
+    public void setDepartureTime(Date departureTime) {
+        this.departureTime = departureTime;
     }
 
     public Flight() {

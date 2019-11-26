@@ -84,7 +84,7 @@ public class FlightFacade {
         Date nextDay = new Date(date.getTime() + 86400000);
         List<FlightDTO> FlightsDTO = new ArrayList();
 
-        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f JOIN f.origin fo JOIN f.destination fd WHERE fo.IATA = :originIATA AND fd.IATA = :destinationIATA AND f.depatureTime >= :date AND f.depatureTime < :nextDay" ,Flight.class);
+        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f JOIN f.origin fo JOIN f.destination fd WHERE fo.IATA = :originIATA AND fd.IATA = :destinationIATA AND f.departureTime >= :date AND f.departureTime < :nextDay" ,Flight.class);
     
         List<Flight> flights = query.setParameter("originIATA", originIATA)
                 .setParameter("destinationIATA", destinationIATA)
@@ -109,7 +109,7 @@ public class FlightFacade {
         Date nextDay = new Date(date.getTime() + 86400000);
         List<FlightDTO> FlightsDTO = new ArrayList();
 
-        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f WHERE f.depatureTime >= :date AND f.depatureTime < :nextDay " ,Flight.class);
+        TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f WHERE f.departureTime >= :date AND f.departureTime < :nextDay " ,Flight.class);
     
         List<Flight> flights = query.setParameter("date", date)
                 .setParameter("nextDay", nextDay)
