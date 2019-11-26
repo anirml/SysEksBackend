@@ -1,7 +1,6 @@
 package facades;
 
 import dto.FlightDTO;
-import static entities.Airport_.IATA;
 import entities.Flight;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,10 +96,6 @@ public class FlightFacade {
             FlightsDTO.add(new FlightDTO(flight));
         }
         return FlightsDTO;
-    }
-
-    public List<FlightDTO> getFlightsByOriginAndDestinationByDate(String originIATA, String destinationIATA, SimpleDateFormat dated) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

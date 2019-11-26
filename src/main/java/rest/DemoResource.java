@@ -3,7 +3,6 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.FlightDTO;
-import static entities.Airport_.IATA;
 import entities.Flight;
 import entities.User;
 import facades.ApiScrapeFacade;
