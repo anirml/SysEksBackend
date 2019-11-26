@@ -11,8 +11,6 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Airport implements Serializable {
-
-    //TODO one to many 
     
     private static final long serialVersionUID = 1L;
     @Id

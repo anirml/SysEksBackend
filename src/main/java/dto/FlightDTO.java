@@ -69,7 +69,6 @@ public class FlightDTO {
     public String getLink() {
         return link;
     }
-    
-    
+       
     
 }
