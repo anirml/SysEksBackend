@@ -9,7 +9,7 @@ import java.util.Date;
 public class FlightDTO {
 
     private final Long id;
-    private final Date depatureTime;
+    private final Date departureTime;
     private final Long flightDuration;
     private final String departureAirportName;
     private final String departureAirportCode;
@@ -23,7 +23,7 @@ public class FlightDTO {
 
     public FlightDTO(Flight f) {
         this.id = f.getId();
-        this.depatureTime = f.getDepatureTime();
+        this.departureTime = f.getDepartureTime();
         this.flightDuration = f.getDuration();
         this.departureAirportName = f.getOrigin().getPlaceName();
         this.departureAirportCode = f.getOrigin().getIATA();
@@ -35,7 +35,7 @@ public class FlightDTO {
     }
 
     public Date getDepatureTime() {
-        return depatureTime;
+        return departureTime;
     }
 
     public Long getFlightDuration() {

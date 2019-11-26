@@ -23,7 +23,7 @@ public class Flight implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date depatureTime;
+    private Date departureTime;
     private double price;
     private String link;
     private Long duration;
@@ -36,18 +36,18 @@ public class Flight implements Serializable {
     public Flight(Airport origin, Airport destination, Date departureTime, double price, String link, Long duration) {
         this.origin = origin;
         this.destination = destination;
-        this.depatureTime = departureTime;
+        this.departureTime = departureTime;
         this.price = price;
         this.link = link;
         this.duration = duration;
     }
 
-    public Date getDepatureTime() {
-        return depatureTime;
+    public Date getDepartureTime() {
+        return departureTime;
     }
 
-    public void setDepatureTime(Date depatureTime) {
-        this.depatureTime = depatureTime;
+    public void setDepartureTime(Date depatureTime) {
+        this.departureTime = depatureTime;
     }
 
     public Flight() {
