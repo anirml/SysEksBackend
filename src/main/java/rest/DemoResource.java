@@ -5,11 +5,13 @@ import com.google.gson.GsonBuilder;
 import dto.FlightDTO;
 import entities.Flight;
 import entities.User;
+import facades.ApiGrabFacade;
 import facades.ApiScrapeFacade;
 import facades.FlightFacade;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -53,6 +55,7 @@ public class DemoResource {
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final FlightFacade FACADE = FlightFacade.getFacadeExample(EMF);
+    private static final ApiGrabFacade APIGRABFACADE = ApiGrabFacade.getApiScrapeFacade(EMF);
     
     @Context
     private UriInfo context;
@@ -201,6 +204,14 @@ public class DemoResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String getAllFlights() {
         List<FlightDTO> flights = FACADE.getAllFlights();
+        return GSON.toJson(flights);
+    }
+    
+    @Path("combined")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAllApiFlights() throws IOException, ProtocolException, ParseException {
+        List<FlightDTO> flights = APIGRABFACADE.getAllApiDataSequentially();
         return GSON.toJson(flights);
     }
     

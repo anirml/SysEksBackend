@@ -34,6 +34,19 @@ public class FlightDTO {
         this.link = f.getLink();
     }
 
+    public FlightDTO(Long id, Date departureTime, Long flightDuration, String departureAirportName, String departureAirportCode, String arrivalAirportName, String arrivalAirportCode, String airline, double price, String link) {
+        this.id = id;
+        this.departureTime = departureTime;
+        this.flightDuration = flightDuration;
+        this.departureAirportName = departureAirportName;
+        this.departureAirportCode = departureAirportCode;
+        this.arrivalAirportName = arrivalAirportName;
+        this.arrivalAirportCode = arrivalAirportCode;
+        this.airline = airline;
+        this.price = price;
+        this.link = link;
+    }
+
     public Date getDepartureTime() {
         return departureTime;
     }
