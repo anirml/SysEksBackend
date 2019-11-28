@@ -106,7 +106,6 @@ public class DemoResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String getRenameMeCount() {
         long count = FACADE.getFlightCount();
-        
         return "{\"count\":"+count+"}";  //Done manually so no need for a DTO
     } 
      
@@ -114,7 +113,7 @@ public class DemoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("fromto/{originIATA}-{destinationIATA}")
     public String SortOriginToDestination(Flight entity, @PathParam("originIATA") String originIATA, @PathParam("destinationIATA") String destinationIATA) throws FlightException, IOException, ProtocolException, ParseException {
-        List<FlightDTO> flight = FACADE.getFlightsByOriginAndDestination(originIATA, destinationIATA);
+       // List<FlightDTO> flight = FACADE.getFlightsByOriginAndDestination(originIATA, destinationIATA);
       //  List<FlightDTO> flightInfoList = FACADE.getFlightsByAirport(IATA);
        List<FlightDTO> flights = APIGRABFACADE.getAllApiDataSequentially();
        List<FlightDTO> sortedFlights = new ArrayList<>();
@@ -130,29 +129,40 @@ public class DemoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("date/{date}")
-    public String getFlightsByDate(Flight entity, @PathParam("date") String dateStr) throws ParseException {
+    public String getFlightsByDate(Flight entity, @PathParam("date") String dateStr) throws ParseException, FlightException, IOException {
         
         DateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 	String dateInString = dateStr + " 00:00:00";
         Date date = formatter.parse(dateInString);
-               
-        List<FlightDTO> flight = FACADE.getFlightsByDate(date);
-        return GSON.toJson(flight);
+        Date nextDay = new Date(date.getTime() + 86400000);
+        //f.departureTime >= :date AND f.departureTime < :nextDay
+       List<FlightDTO> flights = APIGRABFACADE.getAllApiDataSequentially();
+       List<FlightDTO> sortedFlightsByDate = new ArrayList<>();
+       for(FlightDTO f : flights ){
+           if (f.getDepartureTime().after(date) && f.getDepartureTime().before(nextDay)){
+               sortedFlightsByDate.add(f);
+           }
+       } 
+        
+        if(sortedFlightsByDate.isEmpty()){throw new FlightException("Der blev ikke fundet nogen flyafgange på denne dato.");}
+        return GSON.toJson(sortedFlightsByDate);
     }  
     
     @Path("all")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAllFlights() {
+    public String getAllFlights() throws FlightException {
         List<FlightDTO> flights = FACADE.getAllFlights();
+        if(flights.isEmpty()){throw new FlightException("Kunne ikke finde nogle fly, prøv igen.");}
         return GSON.toJson(flights);
     }
     
     @Path("combined")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAllApiFlights() throws IOException, ProtocolException, ParseException {
+    public String getAllApiFlights() throws IOException, ProtocolException, ParseException, FlightException {
         List<FlightDTO> flights = APIGRABFACADE.getAllApiDataSequentially();
+        if(flights.isEmpty()){throw new FlightException("Kunne ikke finde nogle fly, prøv igen.");}
         return GSON.toJson(flights);
     }
     
