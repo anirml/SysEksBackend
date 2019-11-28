@@ -131,7 +131,7 @@ public class DemoResource {
     @Path("date/{date}")
     public String getFlightsByDate(Flight entity, @PathParam("date") String dateStr) throws ParseException, FlightException, IOException {
         
-        DateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        DateFormat formatter = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
 	String dateInString = dateStr + " 00:00:00";
         Date date = formatter.parse(dateInString);
         Date nextDay = new Date(date.getTime() + 86400000);
