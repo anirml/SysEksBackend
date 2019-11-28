@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import dto.FlightDTO;
 import entities.Flight;
 import entities.User;
+import errorhandling.FlightException;
 import facades.ApiGrabFacade;
 import facades.FlightFacade;
 import java.io.IOException;
@@ -112,7 +113,7 @@ public class DemoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("fromto/{originIATA}-{destinationIATA}")
-    public String SortOriginToDestination(Flight entity, @PathParam("originIATA") String originIATA, @PathParam("destinationIATA") String destinationIATA) throws IOException, ProtocolException, ParseException {
+    public String SortOriginToDestination(Flight entity, @PathParam("originIATA") String originIATA, @PathParam("destinationIATA") String destinationIATA) throws FlightException, IOException, ProtocolException, ParseException {
         List<FlightDTO> flight = FACADE.getFlightsByOriginAndDestination(originIATA, destinationIATA);
       //  List<FlightDTO> flightInfoList = FACADE.getFlightsByAirport(IATA);
        List<FlightDTO> flights = APIGRABFACADE.getAllApiDataSequentially();
@@ -121,7 +122,8 @@ public class DemoResource {
            if (f.getDepartureAirportCode().equalsIgnoreCase(originIATA) && f.getArrivalAirportCode().equalsIgnoreCase(destinationIATA)){
                sortedFlights.add(f);
            }
-       }  
+       } 
+       if(sortedFlights.isEmpty()){throw new FlightException("Der blev ikke fundet nogen fly ud fra din søgning");}
         return GSON.toJson(sortedFlights);
     }   
     
