@@ -95,8 +95,6 @@ public List<FlightDTO> getAllApiDataSequentially() throws ProtocolException, IOE
           
         }
     }
-    
-    System.out.println(data);
     return data;
 }    
     

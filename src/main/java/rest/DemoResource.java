@@ -6,7 +6,6 @@ import dto.FlightDTO;
 import entities.Flight;
 import entities.User;
 import facades.ApiGrabFacade;
-import facades.ApiScrapeFacade;
 import facades.FlightFacade;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -46,9 +45,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
 
-/**
- * @author lam@cphbusiness.dk
- */
 @Path("flight")
 public class DemoResource {
 
@@ -103,88 +99,31 @@ public class DemoResource {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"message\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
-    
-    
-    
+
     @Path("count")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getRenameMeCount() {
         long count = FACADE.getFlightCount();
         
-        //System.out.println("--------------->"+count);
         return "{\"count\":"+count+"}";  //Done manually so no need for a DTO
     } 
-    
-    
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-   // @Path("starwars/{childID}")
-    @Path("starwars/person/{starwarsID}")
-    public String  getSwappiDataPerson(@PathParam("starwarsID") int id) throws MalformedURLException, IOException{
-    URL url = new URL("https://swapi.co/api/people/"+id);
-    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    con.setRequestMethod("GET");
-    con.setRequestProperty("Accept", "application/json;charset=UTF-8");
-    con.setRequestProperty("User-Agent", "server"); //remember if you are using SWAPI
-    con.setRequestProperty("Access-Control-Allow-Origin", "server");
-    Scanner scan = new Scanner(con.getInputStream());
-    String jsonStr = null;
-    if (scan.hasNext()) {
-      jsonStr = scan.nextLine();
-    }
-    scan.close(); 
-    return jsonStr;
-  }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-   // @Path("starwars/{childID}")
-    @Path("starwars/planet/{planetsID}")
-    public String  getSwappiDataPlanets(@PathParam("planetsID") int id) throws MalformedURLException, IOException{
-    URL url = new URL("https://swapi.co/api/planets/"+id);
-    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    con.setRequestMethod("GET");
-    con.setRequestProperty("Accept", "application/json;charset=UTF-8");
-    con.setRequestProperty("User-Agent", "server"); //remember if you are using SWAPI
-    con.setRequestProperty("Access-Control-Allow-Origin", "server");
-    Scanner scan = new Scanner(con.getInputStream());
-    String jsonStr = null;
-    if (scan.hasNext()) {
-      jsonStr = scan.nextLine();
-    }
-    scan.close(); 
-    return jsonStr;
-  }
-   
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("swapidata")
-    public void getSwapiData(@Suspended final AsyncResponse ar) throws ExecutionException, InterruptedException {
-        ar.setTimeoutHandler(asyncResponse -> asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE).entity("Timeout response too long..").build()));
-        ar.setTimeout(8, TimeUnit.SECONDS);
-        new Thread(() -> {
-            ApiScrapeFacade apiScrapeFacade = new ApiScrapeFacade();
-            try {
-                ar.resume(GSON.toJson(apiScrapeFacade.runParralel()));
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-    
-    
+     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("fromto/{originIATA}-{destinationIATA}")
-    public String SortOriginToDestination(Flight entity, @PathParam("originIATA") String originIATA, @PathParam("destinationIATA") String destinationIATA) {
+    public String SortOriginToDestination(Flight entity, @PathParam("originIATA") String originIATA, @PathParam("destinationIATA") String destinationIATA) throws IOException, ProtocolException, ParseException {
         List<FlightDTO> flight = FACADE.getFlightsByOriginAndDestination(originIATA, destinationIATA);
       //  List<FlightDTO> flightInfoList = FACADE.getFlightsByAirport(IATA);
-        return GSON.toJson(flight);
-    }  
-    
+       List<FlightDTO> flights = APIGRABFACADE.getAllApiDataSequentially();
+       List<FlightDTO> sortedFlights = new ArrayList<>();
+       for(FlightDTO f : flights ){
+           if (f.getDepartureAirportCode().equalsIgnoreCase(originIATA) && f.getArrivalAirportCode().equalsIgnoreCase(destinationIATA)){
+               sortedFlights.add(f);
+           }
+       }  
+        return GSON.toJson(sortedFlights);
+    }   
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -215,6 +154,5 @@ public class DemoResource {
         return GSON.toJson(flights);
     }
     
-    
-    
+        
 }

@@ -35,11 +35,11 @@ public class FlightFacade {
         return emf.createEntityManager();
     }
     
-    //TODO Remove/Change this before use
     public long getFlightCount(){
         EntityManager em = emf.createEntityManager();
         try{
             long FlightCount = (long)em.createQuery("SELECT COUNT(f) FROM Flight f").getSingleResult();
+            //TODO maybe make if statement if flightcount = 0 with err message;
             return FlightCount;
         }finally{  
             em.close();
@@ -56,6 +56,7 @@ public class FlightFacade {
         for (Flight flight : flights) {
             FlightsDTO.add(new FlightDTO(flight));
         }
+        //TODO maybe make if statement if FlightsDTO = 0 with err message;
         return FlightsDTO;
     }
 
