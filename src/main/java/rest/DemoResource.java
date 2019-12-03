@@ -2,6 +2,8 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dto.FlightDTO;
 import entities.Flight;
 import entities.User;
@@ -19,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -44,6 +47,8 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import utils.EMF_Creator;
 
 @Path("flight")
@@ -166,5 +171,21 @@ public class DemoResource {
         return GSON.toJson(flights);
     }
     
+    @Path("codelist")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getCodeList() throws IOException, ProtocolException, ParseException {
+        
+        List<FlightDTO> flights = APIGRABFACADE.getAllApiDataSequentially();
+        List<String> depCode = FACADE.getValidAirportDeparture(flights);
+        List<String> arrCode = FACADE.getValidAirportArrival(flights);      
+        
+    JSONObject combinedDepArr = new JSONObject();
+    combinedDepArr.put("departureCodes", depCode);
+    combinedDepArr.put("arrivalCodes", arrCode);
+
+        return GSON.toJson(combinedDepArr);
+    }
+       
         
 }

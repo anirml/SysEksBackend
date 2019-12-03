@@ -2,6 +2,9 @@ package facades;
 
 import dto.FlightDTO;
 import entities.Flight;
+import java.io.IOException;
+import java.net.ProtocolException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,6 +120,42 @@ public class FlightFacade {
         }
         return FlightsDTO;
     }
+       
+        
+        public List<String> getValidAirportDeparture(List<FlightDTO> f) throws IOException, ProtocolException, ParseException{
+            EntityManager em = getEntityManager();
             
+        List<String> s = new ArrayList();
+        
+            for (int i = 0; i < f.size(); i++) {                
+                if(!s.contains(f.get(i).getDepartureAirportCode())){
+                    s.add(f.get(i).getDepartureAirportCode());                           
+                }                                            
+        }
+        return s;            
+}
+
+        public List<String> getValidAirportArrival(List<FlightDTO> f) throws IOException, ProtocolException, ParseException{
+            EntityManager em = getEntityManager();
             
+        List<String> s = new ArrayList();
+        
+            for (int i = 0; i < f.size(); i++) {                
+                if(!s.contains(f.get(i).getArrivalAirportCode())){
+                    s.add(f.get(i).getArrivalAirportCode());                           
+                }                                            
+        }
+        return s;            
+}        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+  
 }

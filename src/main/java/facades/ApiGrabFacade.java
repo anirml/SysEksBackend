@@ -64,7 +64,7 @@ public class ApiGrabFacade {
         return urls;
     }
 
-public List<FlightDTO> getAllApiDataSequentially() throws ProtocolException, IOException, ParseException{
+public static List<FlightDTO> getAllApiDataSequentially() throws ProtocolException, IOException, ParseException{
     Long tempId = new Long(1);
     List<FlightDTO> data = new ArrayList<>();
     for(String apiUrl : getURLS()){
@@ -123,7 +123,7 @@ public List<String> getAllDataInParalelWithQueue() throws ProtocolException, IOE
         return results;
     }
 */
-    public String getApiData(String apiUrl) throws MalformedURLException, ProtocolException, IOException {
+    public static String getApiData(String apiUrl) throws MalformedURLException, ProtocolException, IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -137,7 +137,7 @@ public List<String> getAllDataInParalelWithQueue() throws ProtocolException, IOE
         }
     } 
     
-     public Date dateFormatter(String dateStr) throws ParseException{
+     public static Date dateFormatter(String dateStr) throws ParseException{
     SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy HH:mm:ss a");
     Date date = sdf.parse(dateStr);
 
