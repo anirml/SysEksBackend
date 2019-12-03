@@ -10,10 +10,9 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import static oracle.jrockit.jfr.events.Bits.longValue;
+//import static oracle.jrockit.jfr.events.Bits.longValue;
 import org.eclipse.persistence.jpa.jpql.Assert;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import utils.EMF_Creator;
@@ -67,10 +66,10 @@ public class FlightFacadeTest {
             em.getTransaction().begin();
             em.createQuery("DELETE from Role").executeUpdate();
             em.createQuery("DELETE from User").executeUpdate();
-            FlightDTO flight1 = new FlightDTO(longValue(1),new Date(),longValue(3000),"Copenhagen","CPH","LondonHR","LHR","SAS",3000,"www.sas.com");
-            FlightDTO flight2 = new FlightDTO(longValue(2),new Date(),longValue(5000),"Paris","CDG","Copenhagen","CPH","SAS",5000,"www.sas.com");
-            FlightDTO flight3 = new FlightDTO(longValue(3),new Date(),longValue(4000),"Copenhagen","CPH","Tokyo","NRT","SAS",4000,"www.sas.com");
-            FlightDTO flight4 = new FlightDTO(longValue(4),new Date(),longValue(2000),"LondonHR","LHR","Copenhagen","CPH","SAS",2000,"www.sas.com");
+            FlightDTO flight1 = new FlightDTO(Long.valueOf(1),new Date(),Long.valueOf(3000),"Copenhagen","CPH","LondonHR","LHR","SAS",3000,"www.sas.com");
+            FlightDTO flight2 = new FlightDTO(Long.valueOf(2),new Date(),Long.valueOf(5000),"Paris","CDG","Copenhagen","CPH","SAS",5000,"www.sas.com");
+            FlightDTO flight3 = new FlightDTO(Long.valueOf(3),new Date(),Long.valueOf(4000),"Copenhagen","CPH","Tokyo","NRT","SAS",4000,"www.sas.com");
+            FlightDTO flight4 = new FlightDTO(Long.valueOf(4),new Date(),Long.valueOf(2000),"LondonHR","LHR","Copenhagen","CPH","SAS",2000,"www.sas.com");
             //FlightDTO flight5 = new FlightDTO(longValue(5),new Date(),longValue(7000),"Copenhagen","CPH","LondonHR","LHR","SAS",1000,"www.sas.com");
             
             List<FlightDTO> f = new ArrayList();
@@ -89,10 +88,10 @@ public class FlightFacadeTest {
         }
     }
 
-    @AfterEach
-    public void tearDown() {
+  //  @AfterEach
+  //  public void tearDown() {
 //        Remove any data after each test was run
-    }
+  //  }
 
 
 
