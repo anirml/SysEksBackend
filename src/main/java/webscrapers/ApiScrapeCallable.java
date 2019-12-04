@@ -3,12 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webscrabers;
+package webscrapers;
 import java.util.concurrent.Callable;
-/**
- *
- * @author Jeppe
- */
+
 public class ApiScrapeCallable  implements Callable<ApiScrape> {  
     
     private ApiScrape apiScrape;

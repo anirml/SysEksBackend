@@ -52,7 +52,7 @@ import net.minidev.json.JSONObject;
 import utils.EMF_Creator;
 
 @Path("flight")
-public class DemoResource {
+public class FlightResource {
 
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -109,7 +109,7 @@ public class DemoResource {
     @Path("count")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getRenameMeCount() {
+    public String getFlightCount() {
         long count = FACADE.getFlightCount();
         return "{\"count\":"+count+"}";  //Done manually so no need for a DTO
     } 
@@ -186,6 +186,4 @@ public class DemoResource {
 
         return GSON.toJson(combinedDepArr);
     }
-       
-        
 }
