@@ -2,6 +2,9 @@
 package facades;
 
 import dto.FlightDTO;
+import entities.Airport;
+import entities.Flight;
+import static io.restassured.RestAssured.given;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.text.ParseException;
@@ -10,11 +13,13 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-//import static oracle.jrockit.jfr.events.Bits.longValue;
 import org.eclipse.persistence.jpa.jpql.Assert;
+import static org.hamcrest.Matchers.equalTo;
 import org.junit.jupiter.api.AfterAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
 //Uncomment the line below, to temporarily disable this test
@@ -64,13 +69,13 @@ public class FlightFacadeTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createQuery("DELETE from Role").executeUpdate();
-            em.createQuery("DELETE from User").executeUpdate();
+            em.createQuery("DELETE from Flight").executeUpdate();
+            em.createQuery("DELETE from Airport").executeUpdate();
+            
             FlightDTO flight1 = new FlightDTO(Long.valueOf(1),new Date(),Long.valueOf(3000),"Copenhagen","CPH","LondonHR","LHR","SAS",3000,"www.sas.com");
             FlightDTO flight2 = new FlightDTO(Long.valueOf(2),new Date(),Long.valueOf(5000),"Paris","CDG","Copenhagen","CPH","SAS",5000,"www.sas.com");
             FlightDTO flight3 = new FlightDTO(Long.valueOf(3),new Date(),Long.valueOf(4000),"Copenhagen","CPH","Tokyo","NRT","SAS",4000,"www.sas.com");
             FlightDTO flight4 = new FlightDTO(Long.valueOf(4),new Date(),Long.valueOf(2000),"LondonHR","LHR","Copenhagen","CPH","SAS",2000,"www.sas.com");
-            //FlightDTO flight5 = new FlightDTO(longValue(5),new Date(),longValue(7000),"Copenhagen","CPH","LondonHR","LHR","SAS",1000,"www.sas.com");
             
             List<FlightDTO> f = new ArrayList();
             
@@ -82,17 +87,39 @@ public class FlightFacadeTest {
             List k = facade.getValidAirportDeparture(f);           
             
            Assert.isTrue(k.contains("CPH")&&k.contains("LHR")&&k.contains("CDG"), "Not found");
-          
+                               
+    Airport airport = new Airport("SAS","SAS");
+    Airport airport2 = new Airport("RYANAIR","RYANAIR");
+   
+    Date date = new Date();
+    
+    Flight flight1a = new Flight(airport,airport2,date,1500,"sas.com",Long.valueOf(5000));
+    Flight flight2a = new Flight(airport,airport2,date,1500,"sas.com",Long.valueOf(5000));
+    Flight flight3a = new Flight(airport,airport2,date,1500,"sas.com",Long.valueOf(5000));
+
+    em.persist(airport);
+    em.persist(airport2);
+    em.persist(flight1a);
+    em.persist(flight2a);
+    em.persist(flight3a);
+            
+            em.getTransaction().commit();      
         } finally {
             em.close();
         }
     }
-
-  //  @AfterEach
-  //  public void tearDown() {
-//        Remove any data after each test was run
-  //  }
-
+    
+    @Test
+    public void testIfFlightsValid() {
+        assertEquals(3, facade.getFlightCount(), "Expects three rows in the database");      
+    }  
+    
+    
+    
+    
+    
+    
+    
 
 
 }
