@@ -113,13 +113,5 @@ public class FlightFacadeTest {
     public void testIfFlightsValid() {
         assertEquals(3, facade.getFlightCount(), "Expects three rows in the database");      
     }  
-    
-    
-    
-    
-    
-    
-    
-
 
 }
